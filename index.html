@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>化学のクリスマスツリー | Metal Tree Bench</title>
+<meta name="description" content="ツリーの形の銅線を硝酸銀水溶液に入れると、銀の結晶が枝のように伸びて液が青くなる。金属と水溶液の組み合わせを変えて、イオンへのなりやすさを3Dで確かめよう。星をのせて、ライトアップして、写真を保存できます。">
+<meta property="og:title" content="Metal Tree Bench | 化学のクリスマスツリー">
+<meta property="og:description" content="ツリーの形の銅線を硝酸銀水溶液に入れると、銀の結晶が枝のように伸びて液が青くなる。金属と水溶液の組み合わせを変えて、イオンへのなりやすさを3Dで確かめよう。星をのせて、ライトアップして、写真を保存できます。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kaname-chemistry.github.io/metal-tree-3d/">
+<meta property="og:image" content="https://kaname-chemistry.github.io/metal-tree-3d/ogp.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Metal Tree Bench | 化学のクリスマスツリー">
+<meta name="twitter:description" content="銅線のツリーを硝酸銀水溶液に入れると、銀の結晶がツリーを覆う。あなたのツリーを育てて、写真を保存しよう。">
+<meta name="twitter:image" content="https://kaname-chemistry.github.io/metal-tree-3d/ogp.jpg">
+<link rel="icon" href="data:,">
+<style>
+  :root{--fg:#132331;--sub:#56707f}
+  html,body{margin:0;height:100%;overflow:hidden;background:#c7cfd6;color:var(--fg);
+    font-family:system-ui,-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic UI",Meiryo,sans-serif;
+    -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;transition:background .6s}
+  body.night{background:#0b1020}
+  #c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;outline:none}
+  .glass{position:fixed;background:rgba(244,248,252,.5);
+    -webkit-backdrop-filter:blur(16px) saturate(1.5);backdrop-filter:blur(16px) saturate(1.5);
+    border:1px solid rgba(255,255,255,.72);border-radius:16px;
+    box-shadow:0 10px 32px rgba(14,30,48,.2),inset 0 1px 0 rgba(255,255,255,.85)}
+  #hud{top:max(12px,env(safe-area-inset-top));right:12px;width:296px;padding:12px;box-sizing:border-box}
+  .cap{font-size:10.5px;letter-spacing:.07em;color:var(--sub);font-weight:650}
+  #combo{font-size:17px;font-weight:750;margin:2px 0 4px;line-height:1.3}
+  #eq{font-size:13px;font-weight:700;color:#203848;margin:0 0 8px;font-variant-numeric:tabular-nums}
+  #eq.lit{color:#b0521a} #eq.none{color:#7a8b96}
+  .series{display:flex;align-items:center;gap:4px;margin:3px 0 2px}
+  .series span{flex:1;text-align:center;font-size:13px;font-weight:750;padding:4px 0;border-radius:8px;
+    background:rgba(255,255,255,.45);border:1.5px solid rgba(20,50,70,.12);color:#30495a}
+  .series i{font-style:normal;color:#7a8b96;font-size:12px}
+  .series span.w{border-color:#1d6f8f;color:#0f4e66;background:rgba(29,111,143,.14)}
+  .series span.s{border-color:#c0561c;color:#8a3a0f;background:rgba(230,120,40,.14)}
+  .serlab{display:flex;justify-content:space-between;font-size:9.5px;color:var(--sub);margin:0 2px 4px}
+  #why{font-size:11.5px;color:#30495a;margin:0 0 8px;line-height:1.4}
+  .reads{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:0 0 8px}
+  .rd .k{font-size:9.5px;color:var(--sub);font-weight:650;letter-spacing:.03em}
+  .rd .v{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+  .rd .v small{font-size:11px;font-weight:600;color:#4c6474;margin-left:2px}
+  .obs{display:flex;align-items:center;gap:10px;margin:3px 0 8px}
+  #chip{width:30px;height:30px;border-radius:8px;flex:none;border:1px solid rgba(10,20,30,.3);transition:background .3s}
+  #sname{font-size:13.5px;font-weight:650}
+  #log{list-style:none;margin:4px 0 0;padding:0;max-height:130px;overflow:hidden;font-size:12px}
+  #log li{display:flex;align-items:center;gap:7px;padding:4px 0;border-top:1px solid rgba(30,60,80,.1);line-height:1.35}
+  #log li i{width:9px;height:9px;border-radius:3px;flex:none;border:1px solid rgba(0,0,0,.2)}
+  #log li em{font-style:normal;margin-left:auto;font-size:10px;font-weight:700;color:#1d6b3c;background:rgba(60,170,100,.14);
+    border:1px solid rgba(40,140,80,.35);padding:1px 5px;border-radius:5px;flex:none}
+  #log li.no em{color:#6a7b86;background:rgba(120,140,150,.14);border-color:rgba(100,120,130,.35)}
+  #log .empty{color:#6a8090}
+  #safe{margin-top:8px;font-size:10px;color:#5b7383;line-height:1.4}
+  #ctrl{left:50%;transform:translateX(-50%);bottom:max(12px,env(safe-area-inset-bottom));
+    width:min(720px,calc(100vw - 24px));box-sizing:border-box;padding:10px 12px}
+  .row{display:flex;gap:7px;align-items:center}
+  .row+.row{margin-top:8px}
+  .row>button{flex:1}
+  button{font:inherit;font-size:13px;font-weight:650;color:#14303f;background:rgba(255,255,255,.74);
+    border:1px solid rgba(20,50,70,.22);border-radius:10px;padding:8px 10px;cursor:pointer;transition:background .15s,transform .08s;white-space:nowrap}
+  button:hover{background:rgba(255,255,255,.96)} button:active{transform:scale(.97)}
+  button:disabled{opacity:.45;cursor:default}
+  button.primary{background:#1d6f8f;color:#fff;border-color:#165a74}
+  button.on{background:#14303f;color:#fff;border-color:#14303f}
+  button.gold.on{background:#b8860b;border-color:#8f6908}
+  .seg{display:flex;flex:1;border:1px solid rgba(20,50,70,.22);border-radius:10px;overflow:hidden}
+  .seg button{flex:1;border:0;border-radius:0;background:rgba(255,255,255,.5);font-weight:600;font-size:12.5px;padding:8px 4px}
+  .seg button+button{border-left:1px solid rgba(20,50,70,.14)}
+  .seg button.on{background:#14303f;color:#fff}
+  .lbl{font-size:12px;font-weight:650;color:#30495a;white-space:nowrap;min-width:52px}
+  #hint{position:fixed;left:12px;top:max(12px,env(safe-area-inset-top));font-size:11.5px;color:#36505f;
+    background:rgba(255,255,255,.42);padding:6px 9px;border-radius:9px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:214px;background:rgba(18,32,44,.86);color:#fff;font-size:13px;
+    padding:8px 13px;border-radius:10px;opacity:0;transition:opacity .25s;pointer-events:none;max-width:min(560px,calc(100vw - 40px));text-align:center;line-height:1.4}
+  @media (max-width:640px){
+    #hud{width:196px;padding:9px;right:8px;top:max(8px,env(safe-area-inset-top))}
+    #combo{font-size:13px} #eq{font-size:11px;margin-bottom:4px} #why,.serlab,#hint,.rd.x{display:none}
+    .series span{font-size:11px;padding:2px 0} .reads{grid-template-columns:1fr 1fr;gap:3px;margin-bottom:4px} .rd .v{font-size:13px}
+    #chip{width:20px;height:20px} #sname{font-size:11.5px} .obs{margin-bottom:4px} .cap{font-size:9px}
+    #log{max-height:36px;font-size:10.5px} #log li{padding:2px 0} #safe{font-size:9px;margin-top:4px}
+    #ctrl{padding:8px;bottom:max(8px,env(safe-area-inset-bottom))} .row+.row{margin-top:6px}
+    button{font-size:11.5px;padding:8px 4px} .seg button{font-size:10.5px;padding:8px 2px} .lbl{display:none}
+    #toast{bottom:256px;font-size:12px}
+    #ctrl .row:first-child{flex-wrap:wrap;row-gap:6px} #ctrl .row:first-child button{flex:1 1 30%}
+  }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hint">ドラッグで回転 · ホイール / ピンチで拡大</div>
+
+<div id="hud" class="glass">
+  <div class="cap">組み合わせ</div>
+  <div id="combo">銅 ＋ 硝酸銀水溶液</div>
+  <div id="eq">Cu + 2Ag⁺ → Cu²⁺ + 2Ag</div>
+  <div class="cap">イオンへのなりやすさ</div>
+  <div class="series"><span data-m="Mg">Mg</span><i>＞</i><span data-m="Zn">Zn</span><i>＞</i><span data-m="Cu">Cu</span><i>＞</i><span data-m="Ag">Ag</span></div>
+  <div class="serlab"><span>なりやすい</span><span>青枠：線の金属　橙枠：水溶液の金属イオン</span><span>なりにくい</span></div>
+  <div id="why"></div>
+  <div class="reads">
+    <div class="rd x"><div class="k">経過（120倍速）</div><div class="v" id="rT">0:00</div></div>
+    <div class="rd"><div class="k" id="kDep">出てきた銀</div><div class="v" id="rDep">0<small>mg</small></div></div>
+    <div class="rd"><div class="k" id="kDis">溶けた銅</div><div class="v" id="rDis">0<small>mg</small></div></div>
+  </div>
+  <div class="cap">水溶液の色</div>
+  <div class="obs"><div id="chip"></div><div id="sname">無色</div></div>
+  <div class="cap">記録</div>
+  <ul id="log"><li class="empty">組み合わせを選んで「水溶液に入れる」</li></ul>
+  <div id="safe">これはシミュレーションです。実際の実験は必ず先生の指導のもとで行ってください。</div>
+</div>
+
+<div id="ctrl" class="glass">
+  <div class="row">
+    <button id="bGo" class="primary">水溶液に入れる</button>
+    <button id="bStar" class="gold">星をのせる</button>
+    <button id="bLight">ライトアップ</button>
+    <button id="bPhoto">写真を保存</button>
+    <button id="bReset">やり直す</button>
+  </div>
+  <div class="row">
+    <span class="lbl">線の金属</span>
+    <div class="seg" id="wire"><button data-w="Cu" class="on">銅</button><button data-w="Zn">亜鉛</button><button data-w="Mg">マグネシウム</button></div>
+  </div>
+  <div class="row">
+    <span class="lbl">水溶液</span>
+    <div class="seg" id="sol"><button data-s="Ag" class="on">硝酸銀</button><button data-s="Cu">硫酸銅</button><button data-s="Zn">硫酸亜鉛</button><button data-s="Mg">硫酸マグネシウム</button></div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+
+/* ================================================================
+   Chemistry
+   ================================================================ */
+const METAL = {
+  Mg: { name: 'マグネシウム', E: -2.37, M: 24.31, ion: 'Mg²⁺', z: 2 },
+  Zn: { name: '亜鉛', E: -0.76, M: 65.38, ion: 'Zn²⁺', z: 2 },
+  Cu: { name: '銅', E: 0.34, M: 63.55, ion: 'Cu²⁺', z: 2 },
+  Ag: { name: '銀', E: 0.80, M: 107.87, ion: 'Ag⁺', z: 1 },
+};
+const SOLN = { Ag: '硝酸銀水溶液', Cu: '硫酸銅水溶液', Zn: '硫酸亜鉛水溶液', Mg: '硫酸マグネシウム水溶液' };
+const WIRE_NAME = { Cu: '銅線', Zn: '亜鉛線', Mg: 'マグネシウムリボン' };
+const ION0 = 0.0040;          // mol of metal ions in the beaker (not shown as a concentration)
+const SPEED = 120;            // lab seconds per real second
+const K0 = 6.4e-4;            // 1/s for Cu + Ag+ (ΔE = 0.46 V): ~90 % in one hour
+function equation(w, s) {
+  if (w === s) return null;
+  if (METAL[w].E >= METAL[s].E) return null;
+  const n = METAL[s].z === 1 ? '2' : '';
+  return `${w} + ${n}${METAL[s].ion} → ${METAL[w].ion} + ${n}${s}`;
+}
+
+/* ================================================================
+   Renderer, scene, camera
+   ================================================================ */
+const srgb = (r, g, b) => new THREE.Color().setRGB(r, g, b, THREE.SRGBColorSpace);
+const isMobile = matchMedia('(pointer:coarse)').matches || Math.min(innerWidth, innerHeight) < 600;
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.75 : 2));
+renderer.setSize(innerWidth, innerHeight, false);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+const ANISO = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+
+const scene = new THREE.Scene();
+const DAY_BG = srgb(0.79, 0.83, 0.86), NIGHT_BG = srgb(0.04, 0.06, 0.12);
+scene.background = DAY_BG.clone();
+const pmrem = new THREE.PMREMGenerator(renderer);
+const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environment = envTex;
+
+const camera = new THREE.PerspectiveCamera(36, innerWidth / innerHeight, 0.3, 500);
+scene.add(camera);
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true; controls.dampingFactor = 0.08;
+controls.minDistance = 8; controls.maxDistance = 120; controls.maxPolarAngle = 1.52; controls.minPolarAngle = 0.1;
+function frameCamera() {
+  const a = innerWidth / innerHeight;
+  const dist = a < 1 ? 50 : 40;
+  controls.target.set(a < 1 ? 2.5 : 5.5, a < 1 ? 7.5 : 6.2, 0);
+  camera.position.copy(controls.target).addScaledVector(new THREE.Vector3(0.05, 0.22, 0.97).normalize(), dist);
+  controls.update();
+}
+frameCamera();
+
+const hemi = new THREE.HemisphereLight(0xffffff, 0x7b838a, 0.95); scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xfff8ee, 2.2);
+sun.position.set(20, 50, 30); sun.target.position.set(0, 0, 0);
+sun.castShadow = true;
+sun.shadow.mapSize.set(isMobile ? 1024 : 2048, isMobile ? 1024 : 2048);
+Object.assign(sun.shadow.camera, { left: -30, right: 30, top: 30, bottom: -20, near: 10, far: 120 });
+sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.04; sun.shadow.radius = 4;
+scene.add(sun, sun.target);
+const fillL = new THREE.DirectionalLight(0xe6efff, 0.55); fillL.position.set(-30, 20, 20); scene.add(fillL);
+// light-up rig (off by default)
+const spot = new THREE.SpotLight(0xfff0d8, 0, 60, 0.5, 0.6, 1.2); spot.position.set(6, 26, 18); spot.target.position.set(0, 6, 0); scene.add(spot, spot.target);
+const party = [0xff3b3b, 0x2bd96b, 0xffc83b, 0x4aa8ff].map((c, i) => { const l = new THREE.PointLight(c, 0, 30, 2); l.position.set(Math.cos(i * 1.6) * 10, 3 + i * 2, Math.sin(i * 1.6) * 10 + 3); scene.add(l); return l; });
+
+/* ---------- helpers ---------- */
+const V2 = (x, y) => new THREE.Vector2(x, y);
+const JP = '"Hiragino Sans","Noto Sans JP","Yu Gothic UI",IPAPGothic,system-ui,sans-serif';
+function tex(w, h, draw, o = {}) {
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  draw(c.getContext('2d'), w, h);
+  const t = new THREE.CanvasTexture(c);
+  if (o.srgb !== false) t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = ANISO;
+  if (o.rep) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(o.rep[0], o.rep[1]); }
+  t.userData.canvas = c;
+  return t;
+}
+function add(geo, mat, o = {}) {
+  const m = new THREE.Mesh(geo, mat);
+  if (o.p) m.position.set(...o.p);
+  if (o.r) m.rotation.set(...o.r);
+  if (o.s) m.scale.set(...o.s);
+  m.castShadow = !!o.cast; m.receiveShadow = !!o.recv;
+  if (o.ro !== undefined) m.renderOrder = o.ro;
+  (o.to || scene).add(m);
+  return m;
+}
+function glass(o = {}) {
+  const m = new THREE.MeshPhysicalMaterial({ color: o.color ?? 0xffffff, roughness: 0.04, metalness: 0, ior: 1.5,
+    transparent: true, opacity: o.op ?? 0.12, depthWrite: false, side: THREE.DoubleSide, envMapIntensity: o.env ?? 1.6 });
+  const k = (o.edge ?? 0.5).toFixed(2);
+  m.onBeforeCompile = (sh) => {
+    sh.fragmentShader = sh.fragmentShader.replace('#include <opaque_fragment>',
+      `{ float e = 1.0 - abs(dot(normalize(normal), normalize(vViewPosition)));
+         e = e * e * e; diffuseColor.a = clamp(diffuseColor.a + e * ${k}, 0.0, 0.9); outgoingLight += vec3(e * 0.05); }
+       #include <opaque_fragment>`);
+  };
+  m.customProgramCacheKey = () => 'g' + k;
+  return m;
+}
+function drawLabel(g, w, h, text, sub, band) {
+  g.clearRect(0, 0, w, h);
+  g.fillStyle = '#fbfaf6'; g.fillRect(0, 0, w, h);
+  g.fillStyle = band; g.fillRect(0, 0, w, 14);
+  g.fillStyle = '#111a21'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.font = `800 ${Math.min(44, Math.floor(w * 1.1 / Math.max(3, text.length)))}px ${JP}`; g.fillText(text, w / 2, 60);
+  g.font = `500 19px ${JP}`; g.fillStyle = '#4b5e6b'; g.fillText(sub, w / 2, 104);
+}
+const clamp01 = (x) => Math.max(0, Math.min(1, x));
+const ease = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+function rng(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+
+/* ================================================================
+   Room
+   ================================================================ */
+const benchMap = tex(512, 512, (g, w, h) => {
+  g.fillStyle = '#3b4044'; g.fillRect(0, 0, w, h);
+  const im = g.getImageData(0, 0, w, h), d = im.data;
+  for (let i = 0; i < d.length; i += 4) { const n = (Math.random() - 0.5) * 16; d[i] += n; d[i + 1] += n; d[i + 2] += n; }
+  g.putImageData(im, 0, 0);
+}, { rep: [5, 2.5] });
+add(new THREE.BoxGeometry(140, 4, 60), new THREE.MeshStandardMaterial({ map: benchMap, roughness: 0.94, envMapIntensity: 0.45 }), { p: [4, -2, -4], recv: true });
+const wallMap = tex(512, 512, (g, w, h) => {
+  g.fillStyle = '#c1c9cf'; g.fillRect(0, 0, w, h);
+  for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) {
+    const v = 230 + ((i * 7 + j * 3) % 9); g.fillStyle = `rgb(${v - 3},${v + 1},${v + 4})`;
+    g.fillRect(i * 128 + 3, j * 128 + 3, 122, 122);
+  }
+}, { rep: [12, 6] });
+const wallMat = new THREE.MeshStandardMaterial({ map: wallMap, roughness: 0.55, envMapIntensity: 0.6 });
+add(new THREE.PlaneGeometry(140, 70), wallMat, { p: [4, 35, -24], recv: true });
+
+/* ================================================================
+   Beaker + solution
+   ================================================================ */
+const BR = 5.6, BH = 15, LIQ = 13.2;
+{
+  const pts = [V2(0, 0), V2(BR - 0.3, 0), V2(BR, 0.3), V2(BR, BH), V2(BR + 0.25, BH + 0.15), V2(BR - 0.08, BH + 0.05), V2(BR - 0.1, 0.35), V2(BR - 0.35, 0.12), V2(0, 0.12)];
+  add(new THREE.LatheGeometry(pts, 64), glass({ op: 0.1, edge: 0.55 }), { ro: 6 });
+  const gt = tex(512, 512, (g, w, h) => {
+    g.clearRect(0, 0, w, h); g.fillStyle = 'rgba(255,255,255,.85)'; g.font = `600 26px ${JP}`;
+    for (let i = 1; i <= 5; i++) { const y = h - i * 80; g.fillRect(20, y, i % 2 ? 50 : 80, 4); if (i % 2 === 0) g.fillText(String(i * 100), 92, y + 9); }
+  });
+  add(new THREE.CylinderGeometry(BR + 0.01, BR + 0.01, 10, 24, 1, true, -0.25, 0.5), new THREE.MeshBasicMaterial({ map: gt, transparent: true, depthWrite: false }), { p: [0, 5.6, 0], ro: 8 });
+}
+const liqMat = new THREE.MeshPhysicalMaterial({ color: 0xeef5f8, roughness: 0.08, transparent: true, opacity: 0.22, depthWrite: false, envMapIntensity: 1.2 });
+add(new THREE.CylinderGeometry(BR - 0.12, BR - 0.12, LIQ - 0.15, 64), liqMat, { p: [0, 0.15 + (LIQ - 0.15) / 2, 0], ro: 2 });
+// label card in front of the beaker
+const labTex = tex(384, 128, () => {});
+add(new THREE.PlaneGeometry(4.8, 1.6), new THREE.MeshStandardMaterial({ map: labTex, roughness: 0.8 }), { p: [0, 0.85, BR + 2.2], r: [-1.05, 0, 0], recv: true });
+
+/* ================================================================
+   Wire tree (group), deposits, star
+   ================================================================ */
+const treeG = new THREE.Group(); scene.add(treeG);
+const BENCH_X = -10.5, ARC_Y = 16.5;
+const helix = [];
+{
+  const turns = 4.5, y0 = 2.6, y1 = 12.2, r0 = 3.5, r1 = 0.15, N = 260;
+  helix.push(new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0, 1.4, 0), new THREE.Vector3(0.6, 2.2, 0.2));
+  for (let i = 0; i <= N; i++) {
+    const t = i / N, a = t * turns * Math.PI * 2, r = r0 + (r1 - r0) * t;
+    helix.push(new THREE.Vector3(Math.cos(a) * r, y0 + (y1 - y0) * t, Math.sin(a) * r));
+  }
+  helix.push(new THREE.Vector3(0, 12.6, 0));
+}
+const treeCurve = new THREE.CatmullRomCurve3(helix);
+const WIRE_COL = { Cu: 0xc77a4a, Zn: 0xa8b2ba, Mg: 0xdfe3e6 };
+const wireMat = new THREE.MeshStandardMaterial({ color: WIRE_COL.Cu, metalness: 1, roughness: 0.3 });
+add(new THREE.TubeGeometry(treeCurve, 700, 0.08, 8), wireMat, { to: treeG, cast: true });
+add(new THREE.CylinderGeometry(0.9, 1.1, 0.35, 24), new THREE.MeshStandardMaterial({ color: 0x5a6168, metalness: 0.4, roughness: 0.6 }), { p: [0, 0.32, 0], to: treeG, cast: true });
+// seeds along the wire
+const SEEDS = [];
+{
+  const r = rng(11), L = treeCurve.getLength(), N = 230;
+  for (let i = 0; i < N; i++) {
+    const u = 0.05 + 0.93 * (i + r() * 0.8) / N;
+    const p = treeCurve.getPointAt(u), tng = treeCurve.getTangentAt(u);
+    const out = new THREE.Vector3(p.x, 0, p.z).normalize();
+    if (out.lengthSq() < 0.5) out.set(r() - 0.5, 0, r() - 0.5).normalize();
+    const d = out.clone().multiplyScalar(0.8).add(new THREE.Vector3((r() - 0.5) * 0.9, (r() - 0.3) * 1.0, (r() - 0.5) * 0.9)).normalize();
+    SEEDS.push({ p, d, tng, u, h: p.y / 12.6, b0: r() * 0.35 });
+  }
+}
+// dendrite segments (silver needles / zinc leaves)
+const SEGS = [];
+{
+  const r = rng(29);
+  const grow = (p, d, L, depth, b, seedIdx) => {
+    const end = p.clone().addScaledVector(d, L);
+    SEGS.push({ p, d: d.clone(), L, depth, b, seedIdx, w: 0.75 + r() * 0.5 });
+    if (depth >= 4) return;
+    const kids = depth < 2 ? 2 + (r() < 0.4 ? 1 : 0) : 2;
+    for (let k = 0; k < kids; k++) {
+      const axis = new THREE.Vector3(r() - 0.5, r() - 0.5, r() - 0.5).cross(d).normalize();
+      const nd = d.clone().applyAxisAngle(axis, (0.45 + r() * 0.45) * (k % 2 ? 1 : -1)).normalize();
+      const at = p.clone().addScaledVector(d, L * (0.45 + r() * 0.55));
+      grow(at, nd, L * (0.55 + r() * 0.2), depth + 1, b + 0.13 + r() * 0.08, seedIdx);
+    }
+  };
+  SEEDS.forEach((s, i) => grow(s.p.clone(), s.d, 0.55 + r() * 0.45, 0, s.b0, i));
+}
+const NSEG = SEGS.length;
+const needleGeo = new THREE.BoxGeometry(1, 1, 1); needleGeo.translate(0, 0.5, 0);
+const depMat = new THREE.MeshStandardMaterial({ color: 0xf2f5f7, metalness: 1, roughness: 0.14, envMapIntensity: 2.2 });
+const needles = new THREE.InstancedMesh(needleGeo, depMat, NSEG); needles.count = 0; needles.castShadow = true; treeG.add(needles);
+// copper moss blobs
+const BLOBS = [];
+{
+  const r = rng(53);
+  SEEDS.forEach((s, i) => {
+    for (let k = 0; k < 11; k++) {
+      const off = new THREE.Vector3(r() - 0.5, r() - 0.5, r() - 0.5).multiplyScalar(0.4).addScaledVector(s.d, r() * 0.25);
+      BLOBS.push({ p: s.p.clone().add(off), d: s.d, rad: 0.05 + r() * 0.07, b: s.b0 + r() * 0.45, reach: 0.15 + r() * 0.45 });
+    }
+  });
+}
+const blobMat = new THREE.MeshStandardMaterial({ color: 0x6a311d, metalness: 0.45, roughness: 0.85 });
+const blobs = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 1), blobMat, BLOBS.length); blobs.count = 0; blobs.castShadow = true; treeG.add(blobs);
+// star
+const starShape = new THREE.Shape();
+for (let i = 0; i < 10; i++) { const a = Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? 0.42 : 1.0; i ? starShape.lineTo(Math.cos(a) * rr, Math.sin(a) * rr) : starShape.moveTo(Math.cos(a) * rr, Math.sin(a) * rr); }
+const starGeo = new THREE.ExtrudeGeometry(starShape, { depth: 0.22, bevelEnabled: true, bevelSize: 0.06, bevelThickness: 0.06, bevelSegments: 2 }); starGeo.center();
+const starMat = new THREE.MeshStandardMaterial({ color: 0xffcc33, metalness: 0.9, roughness: 0.25, emissive: 0xffaa00, emissiveIntensity: 0.15 });
+const star = add(starGeo, starMat, { p: [0, 13.9, 0], to: treeG, cast: true }); star.visible = false;
+// Mg hydrogen bubbles
+const NB = 80;
+const bubMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.05, transparent: true, opacity: 0.6, envMapIntensity: 2.5, depthWrite: false });
+const bubbles = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 10, 8), bubMat, NB); bubbles.renderOrder = 4; bubbles.frustumCulled = false; scene.add(bubbles); bubbles.count = 0;
+const bub = Array.from({ length: NB }, () => ({ on: false }));
+// twinkles for the light-up
+const NT = 160;
+const twGeo = new THREE.BufferGeometry();
+const twPos = new Float32Array(NT * 3), twPh = new Float32Array(NT);
+twGeo.setAttribute('position', new THREE.BufferAttribute(twPos, 3)); twGeo.setAttribute('aPh', new THREE.BufferAttribute(twPh, 1));
+const twMat = new THREE.ShaderMaterial({
+  uniforms: { uT: { value: 0 }, uA: { value: 0 }, uScale: { value: innerHeight * 0.5 } },
+  vertexShader: `attribute float aPh; uniform float uT, uScale; varying float vK;
+    void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); vK = pow(0.5 + 0.5 * sin(uT * (2.0 + fract(aPh) * 3.0) + aPh * 6.28), 3.0);
+      gl_PointSize = max(1.0, (0.25 + 0.8 * vK) * uScale / -mv.z); gl_Position = projectionMatrix * mv; }`,
+  fragmentShader: `uniform float uA; varying float vK;
+    void main(){ vec2 d = gl_PointCoord - 0.5; float r = length(d);
+      float c = max(0.0, 1.0 - r * 2.0); float x = max(0.0, 1.0 - abs(d.x) * 14.0) * max(0.0, 1.0 - abs(d.y) * 2.0) + max(0.0, 1.0 - abs(d.y) * 14.0) * max(0.0, 1.0 - abs(d.x) * 2.0);
+      float a = min(1.0, (c * c + x) * vK * uA * 1.6); if (a < 0.01) discard; gl_FragColor = vec4(vec3(1.0, 0.97, 0.9), a); }`,
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
+});
+const twinkles = new THREE.Points(twGeo, twMat); twinkles.frustumCulled = false; twinkles.renderOrder = 30; treeG.add(twinkles);
+
+/* ================================================================
+   State
+   ================================================================ */
+function fresh(w = 'Cu', s = 'Ag') {
+  return { t: 0, simT: 0, wire: w, sol: s, inBeaker: false, drop: 0, ion: ION0, reacted: 0, star: false, light: 0, lightOn: false, flags: {}, paused: false };
+}
+let S = fresh();
+const conv = () => S.reacted / ION0;
+const deposit = () => S.reacted * METAL[S.sol].M * 1000;                              // mg
+const dissolved = () => S.reacted * METAL[S.sol].z / 2 * METAL[S.wire].M * 1000;      // mg
+const dE = () => METAL[S.sol].E - METAL[S.wire].E;
+
+/* ================================================================
+   Simulation
+   ================================================================ */
+function sim(dt) {
+  S.t += dt;
+  S.drop = S.inBeaker ? Math.min(1, S.drop + dt * 0.55) : 0;
+  const submerged = S.inBeaker && S.drop >= 1;
+  if (submerged) {
+    S.simT += dt * SPEED;
+    const eq = equation(S.wire, S.sol);
+    if (eq) {
+      const k = K0 * Math.sqrt(dE() / 0.46);
+      const n = S.ion * (1 - Math.exp(-k * dt * SPEED));
+      S.ion -= n; S.reacted += n;
+    }
+    if (!S.flags.first && S.simT > 300) {
+      S.flags.first = true;
+      if (eq) logPush(`${METAL[S.wire].name}が溶けて、${METAL[S.sol].name}が出てきた`, METAL[S.sol].name, S.sol === 'Ag' ? '#e8eef2' : S.sol === 'Cu' ? '#a4552e' : '#8a9096');
+      else if (S.wire === S.sol) logPush('何も起こらない — 同じ金属どうしなので変化しない', '変化なし', '#c8d0d6', 'no');
+      else logPush(`何も起こらない — ${METAL[S.wire].name}は${METAL[S.sol].name}よりイオンになりにくい`, '変化なし', '#c8d0d6', 'no');
+    }
+    if (eq && !S.flags.e && S.simT > 900) {
+      S.flags.e = true;
+      const zs = METAL[S.sol].z;
+      const gain = zs === 1 ? `${METAL[S.sol].ion} 2個がそれぞれ電子を1個ずつ受け取って` : `${METAL[S.sol].ion}が電子を2個受け取って`;
+      logPush(`${METAL[S.wire].name}原子が電子を2個失って${METAL[S.wire].ion}に、${gain}${METAL[S.sol].name}原子になる`, '', '#cfe6f2');
+    }
+    if (eq && S.sol === 'Ag' && S.wire === 'Cu' && !S.flags.blue && conv() > 0.25) { S.flags.blue = true; logPush('液がだんだん青くなってきた — 銅がイオン（Cu²⁺）になって溶け出したから', 'Cu²⁺', '#5aa6e6'); }
+    if (eq && S.sol === 'Cu' && !S.flags.fade && conv() > 0.5) { S.flags.fade = true; logPush('液の青色がうすくなってきた — 青い Cu²⁺ が減って銅になったから', 'Cu²⁺', '#9cc6e8'); }
+    if (S.wire === 'Mg' && !S.flags.h2 && S.simT > 600) { S.flags.h2 = true; logPush(eq ? 'マグネシウムは水溶液中の水とも反応して、水素の泡が出る' : 'マグネシウムが水とわずかに反応して、小さな泡が少し出る（金属樹はできない）', 'H₂', '#ffffff'); }
+    if (eq && !S.flags.done && conv() > 0.9) { S.flags.done = true; logPush(`ツリーが完成！ ${METAL[S.sol].name} ${Math.round(deposit())} mg が出てきた`, '完成', '#ffcc33'); toast('ツリーが完成！ 星をのせて、ライトアップしてみよう'); }
+  }
+  S.light += ((S.lightOn ? 1 : 0) - S.light) * (1 - Math.exp(-dt * 3));
+  hudDirty = true;
+}
+
+/* ================================================================
+   Visuals
+   ================================================================ */
+const dummy = new THREE.Object3D(), up = new THREE.Vector3(0, 1, 0), q = new THREE.Quaternion();
+const COL_CLEAR = srgb(0.93, 0.96, 0.97), COL_BLUE = srgb(0.12, 0.45, 0.95);
+function solutionColor() {
+  // blue intensity from Cu2+ present
+  let cu = 0;
+  if (S.sol === 'Cu') cu = S.ion / ION0;
+  if (S.wire === 'Cu' && S.sol === 'Ag') cu = (S.reacted / 2) / ION0;
+  return { cu, col: COL_CLEAR.clone().lerp(COL_BLUE, Math.min(1, cu * 1.1)) };
+}
+let lastP = -1, lastKind = '';
+function visuals(dt) {
+  { const k = S.drop, a = ease(clamp01(k / 0.35)), b = ease(clamp01((k - 0.35) / 0.3)), c = ease(clamp01((k - 0.65) / 0.35));
+    treeG.position.set(BENCH_X * (1 - b), ARC_Y * a - (ARC_Y - 0.12) * c, 0); }
+  const eq = equation(S.wire, S.sol);
+  const p = eq ? Math.pow(conv(), 0.7) : 0;
+  const kind = eq ? S.sol : '';
+  if (Math.abs(p - lastP) > 1e-4 || kind !== lastKind) {
+    lastP = p; lastKind = kind;
+    let n = 0, nb = 0;
+    if (kind === 'Ag' || kind === 'Zn') {
+      const thin = kind === 'Ag' ? 0.034 : 0.012, wide = kind === 'Ag' ? 0.034 : 0.15, lenK = kind === 'Ag' ? 1 : 0.55;
+      for (const s of SEGS) {
+        const g = clamp01((p * 1.15 - s.b) / 0.16);
+        if (g <= 0) continue;
+        q.setFromUnitVectors(up, s.d);
+        dummy.position.copy(s.p); dummy.quaternion.copy(q);
+        dummy.scale.set(wide * s.w, s.L * g * lenK, thin * s.w); dummy.updateMatrix();
+        needles.setMatrixAt(n++, dummy.matrix);
+      }
+      depMat.color.set(kind === 'Ag' ? (S.wire === 'Cu' ? 0xf2f5f7 : 0x9a9fa4) : 0x6c7176);
+      depMat.roughness = kind === 'Ag' ? 0.14 : 0.45;
+    }
+    if (kind === 'Cu') {
+      for (const b of BLOBS) {
+        const g = clamp01((p * 1.2 - b.b) / 0.2);
+        if (g <= 0) continue;
+        dummy.position.copy(b.p).addScaledVector(b.d, b.reach * g); dummy.quaternion.identity();
+        dummy.scale.setScalar(b.rad * (0.3 + 0.7 * g)); dummy.updateMatrix();
+        blobs.setMatrixAt(nb++, dummy.matrix);
+      }
+    }
+    needles.count = n; blobs.count = nb;
+    needles.instanceMatrix.needsUpdate = true; blobs.instanceMatrix.needsUpdate = true;
+    // twinkle points on needle tips
+    let k = 0;
+    if (kind === 'Ag') for (let i = 0; i < NSEG && k < NT; i += Math.max(1, Math.floor(NSEG / NT))) {
+      const s = SEGS[i]; const g = clamp01((p * 1.15 - s.b) / 0.16); if (g < 0.5) continue;
+      const e = s.p.clone().addScaledVector(s.d, s.L * g); twPos[k * 3] = e.x; twPos[k * 3 + 1] = e.y; twPos[k * 3 + 2] = e.z; twPh[k] = i * 0.618; k++;
+    }
+    twGeo.setDrawRange(0, k); twGeo.attributes.position.needsUpdate = true; twGeo.attributes.aPh.needsUpdate = true;
+  }
+  const { col } = solutionColor();
+  liqMat.color.copy(col); liqMat.opacity = (0.2 + 0.42 * clamp01(solutionColor().cu * 1.1)) * (1 - 0.55 * S.light);
+  wireMat.color.set(WIRE_COL[S.wire]);
+  // magnesium bubbles
+  let used = 0;
+  const rate = S.wire === 'Mg' && S.drop >= 1 ? (eq ? 40 * (0.3 + 0.7 * (S.ion / ION0)) : 3) : 0;
+  S.bAcc = Math.min(3, (S.bAcc || 0) + rate * dt);
+  for (const b of bub) {
+    if (b.on) { b.y += b.v * dt; if (b.y > LIQ - 0.1) b.on = false; }
+    else if (S.bAcc >= 1) { S.bAcc -= 1; const sd = SEEDS[(Math.random() * SEEDS.length) | 0]; b.on = true; b.x = sd.p.x; b.z = sd.p.z; b.y = sd.p.y; b.v = 2.5 + Math.random() * 2; b.r = 0.05 + Math.random() * 0.07; }
+    if (b.on) { dummy.position.set(b.x, b.y, b.z); dummy.quaternion.identity(); dummy.scale.setScalar(b.r); dummy.updateMatrix(); bubbles.setMatrixAt(used++, dummy.matrix); }
+  }
+  bubbles.count = used; bubbles.instanceMatrix.needsUpdate = true;
+  // light-up
+  const L = S.light;
+  scene.background.copy(DAY_BG).lerp(NIGHT_BG, L);
+  hemi.intensity = 0.95 * (1 - L) + 0.02 * L; sun.intensity = 2.2 * (1 - L) + 0.05 * L; fillL.intensity = 0.55 * (1 - L);
+  renderer.toneMappingExposure = 1 + 0.25 * L;
+  scene.environmentIntensity = 1 - 0.8 * L;
+  spot.intensity = 900 * L;
+  party.forEach((l, i) => { l.intensity = 60 * L * (0.75 + 0.25 * Math.sin(S.t * 1.7 + i * 1.9)); });
+  wallMat.color.setScalar(1 - 0.93 * L);
+  twMat.uniforms.uT.value = S.t; twMat.uniforms.uA.value = L;
+  starMat.emissiveIntensity = 0.15 + 1.6 * L * (0.85 + 0.15 * Math.sin(S.t * 3));
+  star.rotation.y = Math.sin(S.t * 0.8) * 0.4;
+  document.body.classList.toggle('night', L > 0.5);
+}
+
+/* ================================================================
+   HUD
+   ================================================================ */
+const $ = (id) => document.getElementById(id);
+let hudDirty = true, hudT = 0;
+function updateHud() {
+  const eq = equation(S.wire, S.sol);
+  $('combo').textContent = `${METAL[S.wire].name} ＋ ${SOLN[S.sol]}`;
+  $('eq').textContent = eq || '反応しない';
+  $('eq').className = !eq ? 'none' : (S.drop >= 1 && S.ion > ION0 * 0.02 ? 'lit' : '');
+  document.querySelectorAll('.series span').forEach(sp => { sp.classList.toggle('w', sp.dataset.m === S.wire); sp.classList.toggle('s', sp.dataset.m === S.sol); });
+  $('why').textContent = S.wire === S.sol ? '同じ金属なので、変化は起こらない。'
+    : eq ? `${METAL[S.wire].name}のほうがイオンになりやすい → ${METAL[S.wire].name}が溶けて、${METAL[S.sol].name}が出てくる。`
+    : `${METAL[S.wire].name}のほうがイオンになりにくい → 何も起こらない。`;
+  const m = Math.floor(S.simT / 3600), mm = Math.floor(S.simT / 60) % 60;
+  $('rT').textContent = `${m}:${String(mm).padStart(2, '0')}`;
+  $('kDep').textContent = `出てきた${METAL[S.sol].name}`; $('kDis').textContent = `溶けた${METAL[S.wire].name}`;
+  $('rDep').innerHTML = `${eq ? Math.round(deposit()) : 0}<small>mg</small>`;
+  $('rDis').innerHTML = `${eq ? Math.round(dissolved()) : 0}<small>mg</small>`;
+  const { cu, col } = solutionColor();
+  const c = col.clone().convertLinearToSRGB();
+  $('chip').style.background = `rgb(${Math.round(c.r * 255)},${Math.round(c.g * 255)},${Math.round(c.b * 255)})`;
+  $('sname').textContent = cu > 0.6 ? '青色' : cu > 0.25 ? 'うすい青色' : cu > 0.05 ? 'ほんのり青色' : '無色';
+}
+function drawCard() {
+  const c = labTex.userData.canvas;
+  drawLabel(c.getContext('2d'), c.width, c.height, SOLN[S.sol], `ツリー：${WIRE_NAME[S.wire]}`, S.sol === 'Cu' ? '#2e7fd6' : '#3d5566');
+  labTex.needsUpdate = true;
+}
+const logEl = $('log'); const LOGMAX = 6;
+function logPush(text, tag = '', color = '#fff', cls = '') {
+  const e = logEl.querySelector('.empty'); if (e) e.remove();
+  const li = document.createElement('li'); if (cls) li.className = cls;
+  li.innerHTML = `<i style="background:${color}"></i><span>${text}</span>${tag ? `<em>${tag}</em>` : ''}`;
+  logEl.prepend(li); while (logEl.children.length > LOGMAX) logEl.lastChild.remove();
+}
+let tt; function toast(s) { const e = $('toast'); e.textContent = s; e.style.opacity = 1; clearTimeout(tt); tt = setTimeout(() => e.style.opacity = 0, 2200); }
+
+/* ================================================================
+   Controls
+   ================================================================ */
+function updateButtons() {
+  document.querySelectorAll('#wire button').forEach(b => { b.classList.toggle('on', b.dataset.w === S.wire); b.disabled = S.inBeaker && b.dataset.w !== S.wire; });
+  document.querySelectorAll('#sol button').forEach(b => { b.classList.toggle('on', b.dataset.s === S.sol); b.disabled = S.inBeaker && b.dataset.s !== S.sol; });
+  $('bGo').disabled = S.inBeaker;
+  $('bStar').classList.toggle('on', S.star); $('bStar').textContent = S.star ? '星をはずす' : '星をのせる';
+  $('bLight').classList.toggle('on', S.lightOn); $('bLight').textContent = S.lightOn ? '明かりをつける' : 'ライトアップ';
+}
+function insert() {
+  if (S.inBeaker) return;
+  S.inBeaker = true;
+  logPush(`${WIRE_NAME[S.wire]}のツリーを${SOLN[S.sol]}に入れた`, '', '#7fb7d6');
+  if (S.sol === 'Ag' && !S.flags.agNote) { S.flags.agNote = true; logPush('※ 実際の硝酸銀は皮膚につくと黒くなり、目に入ると危険な薬品。先生が扱います', '', '#c8d0d6'); }
+  updateButtons();
+}
+function setWire(w) { if (S.inBeaker || !(w in WIRE_NAME)) return; S.wire = w; lastP = -1; drawCard(); updateButtons(); hudDirty = true; }
+function setSol(s) { if (S.inBeaker || !(s in SOLN)) return; S.sol = s; S.ion = ION0; lastP = -1; drawCard(); updateButtons(); hudDirty = true; }
+function setStar(on) { S.star = on; star.visible = on; updateButtons(); }
+function setLight(on) { S.lightOn = on; updateButtons(); }
+function reset() {
+  const keep = { w: S.wire, s: S.sol, star: S.star, light: S.lightOn, l: S.light };
+  S = fresh(keep.w, keep.s); S.star = keep.star; S.lightOn = keep.light; S.light = keep.l;
+  lastP = -1; bub.forEach(b => b.on = false);
+  logEl.innerHTML = '<li class="empty">組み合わせを選んで「水溶液に入れる」</li>';
+  drawCard(); updateButtons(); hudDirty = true;
+}
+function photo(download = true) {
+  renderer.render(scene, camera);
+  const src = renderer.domElement, W = 1200, H = Math.round(W * src.height / src.width);
+  const c = document.createElement('canvas'); c.width = W; c.height = H + 70;
+  const g = c.getContext('2d');
+  g.fillStyle = '#0b1020'; g.fillRect(0, 0, c.width, c.height);
+  g.drawImage(src, 0, 0, W, H);
+  g.fillStyle = '#ffffff'; g.font = `800 30px ${JP}`; g.textBaseline = 'middle';
+  g.fillText(`化学のクリスマスツリー　${METAL[S.wire].name} ＋ ${SOLN[S.sol]}`, 24, H + 35);
+  g.fillStyle = 'rgba(255,255,255,.7)'; g.font = `500 20px ${JP}`; g.textAlign = 'right';
+  g.fillText('kaname-chemistry.github.io/metal-tree-3d', W - 24, H + 37);
+  const url = c.toDataURL('image/png');
+  if (download) { const a = document.createElement('a'); a.href = url; a.download = `chemistry-tree-${S.wire}-${S.sol}.png`; document.body.appendChild(a); a.click(); a.remove(); toast('写真を保存しました'); }
+  return url;
+}
+$('bGo').addEventListener('click', insert);
+$('bReset').addEventListener('click', reset);
+$('bStar').addEventListener('click', () => setStar(!S.star));
+$('bLight').addEventListener('click', () => setLight(!S.lightOn));
+$('bPhoto').addEventListener('click', () => photo(true));
+document.querySelectorAll('#wire button').forEach(b => b.addEventListener('click', () => setWire(b.dataset.w)));
+document.querySelectorAll('#sol button').forEach(b => b.addEventListener('click', () => setSol(b.dataset.s)));
+
+function onResize() {
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight, false); twMat.uniforms.uScale.value = innerHeight * 0.5 * renderer.getPixelRatio(); hudDirty = true;
+}
+addEventListener('resize', onResize);
+
+/* ================================================================
+   Loop
+   ================================================================ */
+reset(); onResize();
+const clock = new THREE.Clock();
+function frame() {
+  const dt = Math.min(clock.getDelta(), 1 / 20);
+  if (!S.paused) { sim(dt); visuals(dt); }
+  controls.update();
+  hudT += dt;
+  if (hudDirty && hudT > 1 / 15) { hudT = 0; hudDirty = false; updateHud(); }
+  renderer.render(scene, camera);
+}
+renderer.setAnimationLoop(frame);
+
+// hook for automated checks; has no effect on normal use
+window.__tree = {
+  get S() { return S; }, METAL, ION0, SPEED, equation, conv, deposit, dissolved, solutionColor,
+  insert, setWire, setSol, setStar, setLight, reset, photo,
+  counts() { return { needles: needles.count, blobs: blobs.count, bubbles: bubbles.count }; },
+  click(id) { document.getElementById(id).click(); },
+  step(sec, h = 1 / 60) { for (let t = 0; t < sec; t += h) { sim(h); visuals(h); } updateHud(); renderer.render(scene, camera); },
+  hold(on) { renderer.setAnimationLoop(on ? null : frame); if (on) { controls.update(); updateHud(); renderer.render(scene, camera); } },
+  view(t, p) { controls.target.set(...t); camera.position.set(...p); controls.update(); }
+};
+</script>
+</body>
+</html>
